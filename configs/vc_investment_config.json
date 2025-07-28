@@ -1,0 +1,105 @@
+{
+  "comment": "Template for Venture Capital Investment Analysis - SaaS Business Case Evaluation",
+  "analysis_type": "vc_investment_analysis",
+  "language": "danish",
+  "agents": 28,
+  "session": "vc_investment_analysis",
+  
+  "excel_files": [
+    "{{EXCEL_FILE_PATH}}"
+  ],
+  
+  "business_context": {
+    "company": "{{COMPANY_NAME}}",
+    "company_profile": {
+      "type": "{{BUSINESS_TYPE}}",
+      "business_model": "{{BUSINESS_MODEL}}",
+      "target_market": "{{TARGET_MARKET}}",
+      "product_description": "{{PRODUCT_DESCRIPTION}}",
+      "stage": "{{COMPANY_STAGE}}",
+      "competitive_advantage": "{{COMPETITIVE_ADVANTAGE}}"
+    },
+    "initiative": "{{COMPANY_NAME}} Investment Due Diligence Analysis",
+    "user_request": "{{USER_REQUEST}}",
+    
+    "current_situation": {
+      "investment_type": "{{INVESTMENT_TYPE}}",
+      "funding_round": "{{FUNDING_ROUND}}",
+      "investment_amount": "{{INVESTMENT_AMOUNT}}",
+      "valuation": "{{COMPANY_VALUATION}}",
+      "use_of_funds": "{{USE_OF_FUNDS}}",
+      
+      "key_metrics": {
+        "revenue_model": "{{REVENUE_MODEL}}",
+        "current_revenue": "{{CURRENT_REVENUE}}",
+        "revenue_projections": "{{REVENUE_PROJECTIONS}}",
+        "customer_acquisition_cost": "{{CAC}}",
+        "customer_lifetime_value": "{{CLV}}",
+        "monthly_recurring_revenue": "{{MRR}}",
+        "churn_rate": "{{CHURN_RATE}}",
+        "market_size": "{{MARKET_SIZE}}"
+      }
+    },
+    
+    "business_question": {
+      "primary": "Er {{COMPANY_NAME}} en god investering?",
+      "valuation_focus": "Er valuationen rimelig baseret på finansielle projektioner?",
+      "market_focus": "Har virksomheden et skalerbart marked og forretningsmodel?",
+      "risk_focus": "Hvad er de primære risici og hvordan kan de mitigeres?",
+      "expected_outcome": "{{EXPECTED_OUTCOME}}"
+    },
+    
+    "analysis_objectives": [
+      "Evaluer forretningsmodellens skalerbarhed og bæredygtighed",
+      "Analyser finansielle projektioner og valuation",
+      "Vurder markedsmulighed og competitive positioning",
+      "Beregn potentiel investor ROI og exit scenarier", 
+      "Identificer key risks og success factors",
+      "Sammenlign med andre SaaS investments og benchmarks"
+    ]
+  },
+  
+  "agent_specializations": {
+    "financial_modeling": 5,
+    "valuation_analysis": 4,
+    "market_intelligence": 3,
+    "customer_analytics": 3,
+    "competitive_analysis": 2,
+    "risk_assessment": 3,
+    "saas_metrics": 3,
+    "strategic_planning": 2,
+    "due_diligence": 2,
+    "qa_validation": 1
+  },
+  
+  "analysis_parameters": {
+    "time_horizon": "60 months",
+    "discount_rate": 0.15,
+    "confidence_level": 0.80,
+    "sensitivity_ranges": {
+      "revenue_growth": [0.50, 1.0, 2.0],
+      "market_penetration": [0.01, 0.05, 0.15],
+      "customer_churn": [0.05, 0.15, 0.30]
+    }
+  },
+  
+  "vc_frameworks": [
+    "saas_metrics_analysis",
+    "cohort_analysis",
+    "unit_economics_modeling", 
+    "market_sizing_analysis",
+    "competitive_moat_assessment",
+    "exit_scenario_modeling"
+  ],
+  
+  "output_requirements": {
+    "language": "danish",
+    "format": "investment_memo",
+    "include_charts": true,
+    "confidence_intervals": true,
+    "scenario_analysis": true,
+    "implementation_roadmap": false,
+    "valuation_analysis": true,
+    "risk_assessment": true
+  }
+}

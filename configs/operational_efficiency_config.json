@@ -1,0 +1,102 @@
+{
+  "comment": "Template for Operational Efficiency Analysis - Process improvement projects",
+  "analysis_type": "operational_efficiency",
+  "language": "english",
+  "agents": 22,
+  "session": "operational_efficiency",
+  
+  "excel_files": [],
+  "data_sources": {
+    "process_data": "path/to/process_metrics.xlsx",
+    "cost_data": "path/to/operational_costs.xlsx", 
+    "quality_data": "path/to/quality_metrics.xlsx",
+    "benchmarking": "path/to/industry_benchmarks.xlsx"
+  },
+  
+  "business_context": {
+    "company": "{{COMPANY_NAME}}",
+    "company_profile": {
+      "type": "{{INDUSTRY_TYPE}}",
+      "business_model": "{{BUSINESS_MODEL}}",
+      "operational_scope": "{{OPERATIONAL_SCOPE}}",
+      "key_processes": "{{KEY_PROCESSES}}",
+      "current_challenges": "{{OPERATIONAL_CHALLENGES}}",
+      "improvement_goals": "{{IMPROVEMENT_OBJECTIVES}}"
+    },
+    "initiative": "{{PROCESS_AREA}} Operational Efficiency Improvement",
+    "user_request": "{{USER_REQUEST}}",
+    
+    "current_situation": {
+      "problem_statement": "{{PROBLEM_STATEMENT}}",
+      "process_description": "{{CURRENT_PROCESS_DESCRIPTION}}",
+      "performance_gaps": "{{PERFORMANCE_GAPS}}",
+      "cost_issues": "{{COST_ISSUES}}",
+      
+      "key_metrics": {
+        "current_cost": "{{CURRENT_OPERATIONAL_COST}}",
+        "throughput": "{{CURRENT_THROUGHPUT}}",
+        "quality_level": "{{CURRENT_QUALITY_METRICS}}",
+        "cycle_time": "{{CURRENT_CYCLE_TIME}}",
+        "resource_utilization": "{{RESOURCE_UTILIZATION}}",
+        "error_rate": "{{ERROR_RATE}}"
+      }
+    },
+    
+    "business_question": {
+      "primary": "How can we improve operational efficiency in {{PROCESS_AREA}}?",
+      "cost_focus": "What cost savings can be achieved?",
+      "quality_focus": "How can we improve quality while reducing costs?",
+      "expected_outcome": "{{EXPECTED_OUTCOME}}"
+    },
+    
+    "analysis_objectives": [
+      "Identify process bottlenecks and inefficiencies",
+      "Calculate potential cost savings and ROI",
+      "Benchmark against industry best practices", 
+      "Design optimized process workflows",
+      "Assess technology and automation opportunities",
+      "Develop implementation roadmap with success metrics"
+    ]
+  },
+  
+  "agent_specializations": {
+    "operations_analytics": 5,
+    "process_optimization": 4,
+    "financial_modeling": 3,
+    "technology_assessment": 3,
+    "quality_management": 2,
+    "change_management": 2,
+    "benchmarking": 2,
+    "qa_validation": 1
+  },
+  
+  "analysis_parameters": {
+    "time_horizon": "12 months",
+    "discount_rate": 0.10,
+    "confidence_level": 0.85,
+    "improvement_ranges": {
+      "cost_reduction": [0.05, 0.15, 0.30],
+      "throughput_increase": [0.10, 0.25, 0.50],
+      "quality_improvement": [0.05, 0.15, 0.25]
+    }
+  },
+  
+  "analysis_frameworks": [
+    "process_mapping_analysis",
+    "bottleneck_identification",
+    "cost_benefit_analysis",
+    "lean_six_sigma_assessment",
+    "technology_impact_analysis",
+    "change_readiness_evaluation"
+  ],
+  
+  "output_requirements": {
+    "language": "{{OUTPUT_LANGUAGE}}",
+    "format": "improvement_roadmap",
+    "include_charts": true,
+    "confidence_intervals": true,
+    "scenario_analysis": true,
+    "implementation_roadmap": true,
+    "change_management_plan": true
+  }
+}

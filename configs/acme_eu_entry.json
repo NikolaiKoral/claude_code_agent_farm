@@ -1,0 +1,106 @@
+{
+  "comment": "Template for Market Entry Analysis - Adaptable for any company/market",
+  "analysis_type": "market_entry_analysis",
+  "language": "english",
+  "agents": 30,
+  "session": "market_entry_analysis",
+  "excel_files": [],
+  "data_sources": {
+    "market_data": "path/to/market_research.xlsx",
+    "competitive_data": "path/to/competitor_analysis.xlsx",
+    "financial_data": "path/to/financial_projections.xlsx"
+  },
+  "business_context": {
+    "company": "ACME Corp",
+    "company_profile": {
+      "type": "Technology/Services",
+      "brand_positioning": "Premium quality and innovation",
+      "target_customers": "Business professionals and consumers",
+      "current_markets": "Domestic market",
+      "unique_value": "Superior quality and customer service",
+      "financial_profile": "{{FINANCIAL_PROFILE}}"
+    },
+    "initiative": "European Market Market Entry Analysis",
+    "user_request": "Analyze European Market for strategic decision-making",
+    "current_situation": {
+      "problem_statement": "{{PROBLEM_STATEMENT}}",
+      "market_opportunity": "{{MARKET_OPPORTUNITY}}",
+      "investment_required": "{{INVESTMENT_BUDGET}}",
+      "timeline": "{{ENTRY_TIMELINE}}",
+      "key_metrics": {
+        "market_size": "{{MARKET_SIZE}}",
+        "growth_rate": "{{MARKET_GROWTH_RATE}}",
+        "competitive_intensity": "{{COMPETITIVE_INTENSITY}}",
+        "regulatory_barriers": "{{REGULATORY_BARRIERS}}",
+        "customer_acquisition_cost": "{{ESTIMATED_CAC}}",
+        "revenue_projections": "{{REVENUE_PROJECTIONS}}"
+      }
+    },
+    "business_question": {
+      "primary": "Should we enter the European Market market?",
+      "roi_focus": "What is the expected ROI and payback period?",
+      "risk_focus": "What are the key risks and mitigation strategies?",
+      "expected_outcome": "Data-driven insights and recommendations for European Market"
+    },
+    "analysis_objectives": [
+      "Assess market attractiveness and competitive landscape",
+      "Calculate financial projections and ROI scenarios",
+      "Identify key success factors and competitive advantages",
+      "Analyze regulatory and operational requirements",
+      "Develop market entry strategy and implementation roadmap",
+      "Quantify risks and develop mitigation strategies"
+    ]
+  },
+  "agent_specializations": {
+    "market_intelligence": 4,
+    "competitive_analysis": 3,
+    "financial_modeling": 4,
+    "regulatory_compliance": 2,
+    "customer_analytics": 3,
+    "operations_analytics": 2,
+    "risk_assessment": 3,
+    "strategic_planning": 3,
+    "implementation_planning": 2,
+    "qa_validation": 2,
+    "synthesis_coordination": 2
+  },
+  "analysis_parameters": {
+    "time_horizon": "36 months",
+    "discount_rate": 0.1,
+    "confidence_level": 0.9,
+    "sensitivity_ranges": {
+      "market_penetration": [
+        0.01,
+        0.05,
+        0.1
+      ],
+      "price_elasticity": [
+        -2.0,
+        -1.0,
+        -0.5
+      ],
+      "competition_response": [
+        0.2,
+        0.5,
+        0.8
+      ]
+    }
+  },
+  "analysis_frameworks": [
+    "porter_five_forces",
+    "swot_analysis",
+    "market_attractiveness_matrix",
+    "competitive_positioning",
+    "financial_modeling",
+    "risk_assessment_matrix"
+  ],
+  "output_requirements": {
+    "language": "english",
+    "format": "executive_summary",
+    "include_charts": true,
+    "confidence_intervals": true,
+    "scenario_analysis": true,
+    "implementation_roadmap": true,
+    "competitive_response_analysis": true
+  }
+}

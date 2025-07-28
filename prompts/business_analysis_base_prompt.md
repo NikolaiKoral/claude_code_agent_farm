@@ -99,35 +99,48 @@ Udfør en dybdegående analyse inden for dit specialeområde og levér indsigter
 
 ## OUTPUT FORMAT
 
-### 📊 EXECUTIVE SUMMARY
-[Kort sammenfatning på dansk af hovedresultater]
+### Sammenfatning
+[Kort sammenfatning på dansk af hovedresultater og strategisk anbefaling]
 
-### 🔍 HOVEDRESULTATER
+### Hovedresultater
 - **Resultat 1**: [Kvantificeret fund med beregninger]
 - **Resultat 2**: [Indsigt med støttende data]
 - **Resultat 3**: [Anbefaling med begrundelse]
 
-### 📈 KVANTITATIV ANALYSE
+### Gebyr optimerings analyse
+**OBLIGATORISK**: Evaluer forskellige gebyr niveauer og tærskler:
+
+1. **Gebyr niveau optimering**:
+   - Analyser 15 DKK, 20 DKK, 25 DKK, 30 DKK, 35 DKK alternativer
+   
+2. **Tærskel optimering**:
+   - Sammenlign 130 kr vs 150 kr vs 200 kr tærskler
+   
+3. **CAC sammenligning**:
+   - Beregn og sammenlign med gennemsnitlig kundeakquisition omkostning
+
+### Kvantitativ analyse
 ```
 [Detaljerede beregninger, modeller og prognoser]
 - Nøgletal og metrics
 - Finansielle projektioner  
 - Statistiske analyser
+- ROI beregninger for forskellige gebyr niveauer
 ```
 
-### 🚀 KREATIVE ALTERNATIVER
-**MANDATORY**: Udforsk minimum 3 innovative alternativer:
+### Kreative alternativer
+**OBLIGATORISK**: Udforsk minimum 3 innovative alternativer:
 
 1. **Loyalitets-baseret løsning**:
    - [Klub Kop & Kande integration og medlemsfordele]
    
 2. **Service innovation løsning**:
-   - [Premium oplevelser der rechtfærdiggør costs]
+   - [Premium oplevelser der retfærdiggør omkostninger]
    
 3. **Brand-styrkende løsning**:
    - [Hvordan vende udfordring til konkurrencefordel]
 
-### 💡 ANBEFALINGER
+### Anbefalinger
 1. **Kort sigt (0-6 måneder)**:
    - [Konkret handling med forventet resultat]
    
@@ -137,13 +150,13 @@ Udfør en dybdegående analyse inden for dit specialeområde og levér indsigter
 3. **Lang sigt (12+ måneder)**:
    - [Udviklingsmuligheder og optimeringer]
 
-### ⚠️ RISICI OG USIKKERHEDER
+### Risici og usikkerheder
 - **Høj risiko**: [Identificerede trusler med sandsynlighed]
 - **Medium risiko**: [Potentielle udfordringer]
 - **Lav risiko**: [Mindre bekymringer]
 
-### 🎯 TILLIDSGRAD OG ANTAGELSER
-- **Tillidsgrad**: [Høj/Medium/Lav] baseret på datakvalltet
+### Tillidsgrad og antagelser
+- **Tillidsgrad**: [Høj/Medium/Lav] baseret pada datakvalitet
 - **Kritiske antagelser**: [Liste af vigtige forudsætninger]
 - **Datakvalitet**: [Vurdering af tilgængelige data]
 

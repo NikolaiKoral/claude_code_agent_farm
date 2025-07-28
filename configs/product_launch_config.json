@@ -1,0 +1,103 @@
+{
+  "comment": "Template for Product Launch Analysis - Adaptable for any product/service",
+  "analysis_type": "product_launch_analysis",
+  "language": "english",
+  "agents": 25,
+  "session": "product_launch_analysis",
+  
+  "excel_files": [],
+  "data_sources": {
+    "market_research": "path/to/customer_research.xlsx",
+    "cost_analysis": "path/to/product_costs.xlsx",
+    "competitive_analysis": "path/to/competitor_products.xlsx"
+  },
+  
+  "business_context": {
+    "company": "{{COMPANY_NAME}}",
+    "company_profile": {
+      "type": "{{INDUSTRY_TYPE}}",
+      "brand_positioning": "{{BRAND_POSITIONING}}",
+      "target_customers": "{{TARGET_CUSTOMERS}}",
+      "distribution_channels": "{{DISTRIBUTION_CHANNELS}}",
+      "unique_value": "{{UNIQUE_VALUE_PROPOSITION}}",
+      "existing_products": "{{EXISTING_PRODUCT_PORTFOLIO}}"
+    },
+    "initiative": "{{PRODUCT_NAME}} Launch Analysis",
+    "user_request": "{{USER_REQUEST}}",
+    
+    "current_situation": {
+      "problem_statement": "{{PROBLEM_STATEMENT}}",
+      "product_description": "{{PRODUCT_DESCRIPTION}}",
+      "target_market": "{{TARGET_MARKET}}",
+      "development_stage": "{{DEVELOPMENT_STAGE}}",
+      
+      "key_metrics": {
+        "development_cost": "{{DEVELOPMENT_COST}}",
+        "unit_cost": "{{UNIT_COST}}",
+        "target_price": "{{TARGET_PRICE}}",
+        "market_size": "{{ADDRESSABLE_MARKET}}",
+        "launch_budget": "{{MARKETING_BUDGET}}",
+        "break_even_units": "{{BREAK_EVEN_VOLUME}}"
+      }
+    },
+    
+    "business_question": {
+      "primary": "Should we launch {{PRODUCT_NAME}} and when?",
+      "pricing_focus": "What is the optimal pricing strategy?",
+      "channel_focus": "Which distribution channels should we prioritize?",
+      "expected_outcome": "{{EXPECTED_OUTCOME}}"
+    },
+    
+    "analysis_objectives": [
+      "Assess market demand and customer willingness to pay",
+      "Optimize pricing strategy and revenue projections",
+      "Analyze competitive positioning and differentiation",
+      "Evaluate distribution channel effectiveness",
+      "Calculate launch costs and ROI scenarios",
+      "Develop go-to-market strategy and timeline"
+    ]
+  },
+  
+  "agent_specializations": {
+    "market_intelligence": 3,
+    "customer_analytics": 4,
+    "pricing_strategy": 3,
+    "competitive_analysis": 2,
+    "financial_modeling": 3,
+    "marketing_analytics": 3,
+    "operations_analytics": 2,
+    "risk_assessment": 2,
+    "strategic_planning": 2,
+    "qa_validation": 1
+  },
+  
+  "analysis_parameters": {
+    "time_horizon": "24 months",
+    "discount_rate": 0.12,
+    "confidence_level": 0.85,
+    "sensitivity_ranges": {
+      "adoption_rate": [0.02, 0.08, 0.15],
+      "price_sensitivity": [-1.5, -1.0, -0.5],
+      "marketing_effectiveness": [0.5, 1.0, 2.0]
+    }
+  },
+  
+  "analysis_frameworks": [
+    "customer_value_proposition",
+    "competitive_positioning_map",
+    "pricing_strategy_matrix",
+    "channel_effectiveness_analysis",
+    "financial_modeling",
+    "launch_risk_assessment"
+  ],
+  
+  "output_requirements": {
+    "language": "{{OUTPUT_LANGUAGE}}",
+    "format": "business_case",
+    "include_charts": true,
+    "confidence_intervals": true,
+    "scenario_analysis": true,
+    "implementation_roadmap": true,
+    "marketing_strategy": true
+  }
+}

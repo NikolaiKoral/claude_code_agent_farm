@@ -1,0 +1,104 @@
+{
+  "comment": "Template for Market Entry Analysis - Adaptable for any company/market",
+  "analysis_type": "market_entry_analysis",
+  "language": "english",
+  "agents": 30,
+  "session": "market_entry_analysis",
+  
+  "excel_files": [],
+  "data_sources": {
+    "market_data": "path/to/market_research.xlsx",
+    "competitive_data": "path/to/competitor_analysis.xlsx",
+    "financial_data": "path/to/financial_projections.xlsx"
+  },
+  
+  "business_context": {
+    "company": "{{COMPANY_NAME}}",
+    "company_profile": {
+      "type": "{{INDUSTRY_TYPE}}",
+      "brand_positioning": "{{BRAND_POSITIONING}}",
+      "target_customers": "{{TARGET_CUSTOMERS}}",
+      "current_markets": "{{CURRENT_MARKETS}}",
+      "unique_value": "{{UNIQUE_VALUE_PROPOSITION}}",
+      "financial_profile": "{{FINANCIAL_PROFILE}}"
+    },
+    "initiative": "{{MARKET_NAME}} Market Entry Analysis",
+    "user_request": "{{USER_REQUEST}}",
+    
+    "current_situation": {
+      "problem_statement": "{{PROBLEM_STATEMENT}}",
+      "market_opportunity": "{{MARKET_OPPORTUNITY}}",
+      "investment_required": "{{INVESTMENT_BUDGET}}",
+      "timeline": "{{ENTRY_TIMELINE}}",
+      
+      "key_metrics": {
+        "market_size": "{{MARKET_SIZE}}",
+        "growth_rate": "{{MARKET_GROWTH_RATE}}",
+        "competitive_intensity": "{{COMPETITIVE_INTENSITY}}",
+        "regulatory_barriers": "{{REGULATORY_BARRIERS}}",
+        "customer_acquisition_cost": "{{ESTIMATED_CAC}}",
+        "revenue_projections": "{{REVENUE_PROJECTIONS}}"
+      }
+    },
+    
+    "business_question": {
+      "primary": "Should we enter the {{MARKET_NAME}} market?",
+      "roi_focus": "What is the expected ROI and payback period?",
+      "risk_focus": "What are the key risks and mitigation strategies?",
+      "expected_outcome": "{{EXPECTED_OUTCOME}}"
+    },
+    
+    "analysis_objectives": [
+      "Assess market attractiveness and competitive landscape",
+      "Calculate financial projections and ROI scenarios",
+      "Identify key success factors and competitive advantages",
+      "Analyze regulatory and operational requirements",
+      "Develop market entry strategy and implementation roadmap",
+      "Quantify risks and develop mitigation strategies"
+    ]
+  },
+  
+  "agent_specializations": {
+    "market_intelligence": 4,
+    "competitive_analysis": 3,
+    "financial_modeling": 4,
+    "regulatory_compliance": 2,
+    "customer_analytics": 3,
+    "operations_analytics": 2,
+    "risk_assessment": 3,
+    "strategic_planning": 3,
+    "implementation_planning": 2,
+    "qa_validation": 2,
+    "synthesis_coordination": 2
+  },
+  
+  "analysis_parameters": {
+    "time_horizon": "36 months",
+    "discount_rate": 0.10,
+    "confidence_level": 0.90,
+    "sensitivity_ranges": {
+      "market_penetration": [0.01, 0.05, 0.10],
+      "price_elasticity": [-2.0, -1.0, -0.5],
+      "competition_response": [0.20, 0.50, 0.80]
+    }
+  },
+  
+  "analysis_frameworks": [
+    "porter_five_forces",
+    "swot_analysis", 
+    "market_attractiveness_matrix",
+    "competitive_positioning",
+    "financial_modeling",
+    "risk_assessment_matrix"
+  ],
+  
+  "output_requirements": {
+    "language": "{{OUTPUT_LANGUAGE}}",
+    "format": "executive_summary",
+    "include_charts": true,
+    "confidence_intervals": true,
+    "scenario_analysis": true,
+    "implementation_roadmap": true,
+    "competitive_response_analysis": true
+  }
+}

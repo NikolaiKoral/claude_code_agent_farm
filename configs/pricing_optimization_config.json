@@ -1,0 +1,101 @@
+{
+  "comment": "Template for Pricing Strategy Optimization - Any product/service pricing",
+  "analysis_type": "pricing_optimization",
+  "language": "english", 
+  "agents": 20,
+  "session": "pricing_optimization",
+  
+  "excel_files": [],
+  "data_sources": {
+    "sales_data": "path/to/historical_sales.xlsx",
+    "cost_data": "path/to/cost_structure.xlsx",
+    "competitive_pricing": "path/to/competitor_prices.xlsx",
+    "customer_research": "path/to/price_sensitivity.xlsx"
+  },
+  
+  "business_context": {
+    "company": "{{COMPANY_NAME}}",
+    "company_profile": {
+      "type": "{{INDUSTRY_TYPE}}",
+      "brand_positioning": "{{BRAND_POSITIONING}}",
+      "target_customers": "{{TARGET_CUSTOMERS}}",
+      "pricing_model": "{{CURRENT_PRICING_MODEL}}",
+      "unique_value": "{{UNIQUE_VALUE_PROPOSITION}}",
+      "competitive_position": "{{COMPETITIVE_POSITION}}"
+    },
+    "initiative": "{{PRODUCT_SERVICE}} Pricing Optimization",
+    "user_request": "{{USER_REQUEST}}",
+    
+    "current_situation": {
+      "problem_statement": "{{PROBLEM_STATEMENT}}",
+      "current_pricing": "{{CURRENT_PRICE_STRUCTURE}}",
+      "profitability_issues": "{{PROFITABILITY_CHALLENGES}}",
+      "market_pressure": "{{COMPETITIVE_PRESSURE}}",
+      
+      "key_metrics": {
+        "current_price": "{{CURRENT_PRICE}}",
+        "unit_cost": "{{UNIT_COST}}",
+        "current_margin": "{{CURRENT_MARGIN}}",
+        "sales_volume": "{{CURRENT_VOLUME}}",
+        "customer_acquisition_cost": "{{CAC}}",
+        "customer_lifetime_value": "{{CLV}}"
+      }
+    },
+    
+    "business_question": {
+      "primary": "What is the optimal pricing strategy for {{PRODUCT_SERVICE}}?",
+      "elasticity_focus": "How price-sensitive are our customers?",
+      "competitive_focus": "How should we respond to competitive pricing pressure?",
+      "expected_outcome": "{{EXPECTED_OUTCOME}}"
+    },
+    
+    "analysis_objectives": [
+      "Calculate price elasticity and demand curves",
+      "Optimize pricing for revenue and profit maximization", 
+      "Analyze competitive pricing strategies and responses",
+      "Segment customers by price sensitivity",
+      "Model dynamic and personalized pricing scenarios",
+      "Assess psychological pricing and behavioral factors"
+    ]
+  },
+  
+  "agent_specializations": {
+    "pricing_strategy": 5,
+    "customer_analytics": 4,
+    "competitive_analysis": 3,
+    "financial_modeling": 3,
+    "market_intelligence": 2,
+    "behavioral_economics": 2,
+    "qa_validation": 1
+  },
+  
+  "analysis_parameters": {
+    "time_horizon": "18 months",
+    "discount_rate": 0.08,
+    "confidence_level": 0.90,
+    "sensitivity_ranges": {
+      "price_elasticity": [-2.5, -1.0, -0.3],
+      "competitive_response": [0.0, 0.5, 1.0],
+      "cost_inflation": [0.02, 0.05, 0.10]
+    }
+  },
+  
+  "analysis_frameworks": [
+    "price_elasticity_analysis",
+    "competitive_pricing_matrix", 
+    "customer_value_based_pricing",
+    "psychological_pricing_effects",
+    "dynamic_pricing_optimization",
+    "revenue_optimization_modeling"
+  ],
+  
+  "output_requirements": {
+    "language": "{{OUTPUT_LANGUAGE}}",
+    "format": "pricing_strategy_guide",
+    "include_charts": true,
+    "confidence_intervals": true,
+    "scenario_analysis": true,
+    "implementation_roadmap": true,
+    "a_b_testing_framework": true
+  }
+}

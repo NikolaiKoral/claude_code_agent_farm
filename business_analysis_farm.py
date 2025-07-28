@@ -22,6 +22,12 @@ from pathlib import Path
 from random import randint
 from typing import Any, Dict, List, Optional, Tuple, Union
 
+# Import configuration manager
+try:
+    from config_manager import ConfigurationManager
+except ImportError:
+    ConfigurationManager = None
+
 import typer
 from rich import box
 from rich.console import Console
@@ -213,7 +219,9 @@ def tmux_send(target: str, data: str, enter: bool = True, update_heartbeat: bool
                     # Load the data into a tmux buffer
                     run(f"tmux load-buffer -b {buf_name} {shlex.quote(tmp_path)}", quiet=True)
                     # Paste the buffer into the target pane and delete the buffer (-d)
-                    run(f"tmux paste-buffer -d -b {buf_name} -t {target}", quiet=True)
+                    # Add small delay and check if pane exists first
+                    time.sleep(0.1)
+                    run(f"tmux paste-buffer -d -b {buf_name} -t {shlex.quote(target)}", quiet=True)
                 finally:
                     # Clean up temp file
                     with contextlib.suppress(FileNotFoundError):
@@ -983,6 +991,18 @@ Reference specific numbers, perform calculations, and base your analysis on the 
 # ─────────────────────────────── CLI Entry Point ──────────────────────────── #
 
 @app.callback(invoke_without_command=True)
+def main_callback(ctx: typer.Context):
+    """Business Analysis Agent Farm - Multi-Agent Business Intelligence"""
+    if ctx.invoked_subcommand is None:
+        # This is the main command, show help
+        console.print("[yellow]Use --help to see available options or run a subcommand[/yellow]")
+        console.print("Available commands:")
+        console.print("  • list-templates    - Show available configuration templates")
+        console.print("  • create-config     - Create configuration from template")
+        console.print("  • template-vars     - Show template variables")
+        console.print("  • run               - Run the business analysis farm")
+
+@app.command("run")  # Make the main functionality a command
 def main(
     ctx: typer.Context,
     path: str = typer.Option(..., "--path", help="Absolute path to project root", rich_help_panel="Required Arguments"),
@@ -1082,6 +1102,78 @@ def main(
         raise typer.Exit(1)
         
     console.print("[green]✓ Business Analysis Farm completed successfully[/green]")
+
+
+@app.command("list-templates", help="List available configuration templates")
+def list_templates():
+    """List available configuration templates"""
+    if not ConfigurationManager:
+        console.print("[red]Configuration manager not available[/red]")
+        return
+    
+    config_manager = ConfigurationManager()
+    templates = config_manager.get_available_templates()
+    
+    console.print("[bold]Available Business Analysis Templates:[/bold]")
+    for template in templates:
+        console.print(f"  • {template}")
+    
+    console.print(f"\nTotal: {len(templates)} templates available")
+
+
+@app.command("create-config")
+def create_config(
+    template: str = typer.Argument(..., help="Template name to use"),
+    company: str = typer.Option(..., "--company", "-c", help="Company name"),
+    analysis_focus: str = typer.Option(..., "--focus", "-f", help="Analysis focus area"),
+    output: str = typer.Option(None, "--output", "-o", help="Output configuration file path"),
+    language: str = typer.Option("danish", "--language", "-l", help="Analysis language"),
+):
+    """Create a configuration from template with basic parameters"""
+    if not ConfigurationManager:
+        console.print("[red]Configuration manager not available[/red]")
+        return
+    
+    config_manager = ConfigurationManager()
+    
+    try:
+        config = config_manager.create_quick_config(
+            template, company, analysis_focus, language
+        )
+        
+        if output:
+            with open(output, 'w', encoding='utf-8') as f:
+                json.dump(config, f, indent=2, ensure_ascii=False)
+            console.print(f"[green]✓ Configuration saved to: {output}[/green]")
+        else:
+            console.print(json.dumps(config, indent=2, ensure_ascii=False))
+            
+    except Exception as e:
+        console.print(f"[red]Error creating configuration: {e}[/red]")
+        raise typer.Exit(1)
+
+
+@app.command("template-vars")
+def template_variables(template: str = typer.Argument(..., help="Template name")):
+    """Show required variables for a template"""
+    if not ConfigurationManager:
+        console.print("[red]Configuration manager not available[/red]")
+        return
+    
+    config_manager = ConfigurationManager()
+    
+    try:
+        variables = config_manager.get_template_variables(template)
+        console.print(f"[bold]Variables for template '{template}':[/bold]")
+        
+        for var in sorted(variables):
+            console.print(f"  • {var}")
+        
+        console.print(f"\nTotal: {len(variables)} variables")
+        
+    except Exception as e:
+        console.print(f"[red]Error: {e}[/red]")
+        raise typer.Exit(1)
 
 
 if __name__ == "__main__":

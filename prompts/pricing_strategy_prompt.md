@@ -39,8 +39,25 @@ Optimer:
 - **Dynamic pricing** muligheder
 - **Bundle pricing** med andre services
 
-## 🚀 KREATIVE PRICING ALTERNATIVER
-**MANDATORY**: Udforsk innovative alternativer der udnytter Kop & Kande's brand og loyalitet:
+## GEBYR OPTIMERINGS ANALYSE
+**KRITISK**: Forstå at "F.eks. 25 kr" er et EKSEMPEL at evaluere, ikke en fast krav.
+
+### Gebyr niveau analyse
+Evaluer og sammenlign forskellige gebyr niveauer:
+- **15 DKK**: Lav barrier, højere volumen retention
+- **20 DKK**: Moderat niveau, balance mellem omkostning og volumen
+- **25 DKK**: Foreslået niveau (kun eksempel)
+- **30 DKK**: Højere margin, potentielt højere churn
+- **35 DKK**: Premium pricing, maksimal margin
+
+### Tærskel optimering
+Analyser forskellige ordre størrelser tærskler:
+- **130 kr**: Nuværende problematiske tærskel
+- **150 kr**: Foreslået ny tærskel
+- **200 kr**: Højere tærskel, potentielt flere gebyr ordrer
+
+## KREATIVE PRICING ALTERNATIVER
+**OBLIGATORISK**: Udforsk innovative alternativer der udnytter Kop & Kande's brand og loyalitet:
 
 ### Model 1: Loyalitets-Differentiated Pricing
 - **Klub Kop & Kande medlemmer**: GRATIS C&C på ordrer under 150 DKK

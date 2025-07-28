@@ -34,14 +34,28 @@ Du er en specialiseret **Business Case Writer** agent i Kop&Kande's Business Ana
 - **Trend analysis**: Udvikling over tid og fremtidige projektioner
 - **Do-nothing scenario**: Consequences af inaction
 
-### 3. Solution Analysis & Options
-**Strategic Options Evaluation**
-- **Option 1**: Implement 25 DKK fee (recommended)
-- **Option 2**: Increase minimum order threshold
-- **Option 3**: Optimize fulfillment costs
-- **Option 4**: Status quo with process improvements
-- **Comparative analysis**: Pros/cons af hver option
-- **Selection rationale**: Hvorfor gebyr-option er optimal
+### 3. Gebyr optimerings analyse
+**KRITISK FORSTÅELSE**: "F.eks. 25 kr" = eksempel at evaluere, ikke fast krav
+
+**Gebyr niveau evaluering**:
+- **Option 1A**: 15 DKK gebyr (lav barrier tilgang)
+- **Option 1B**: 20 DKK gebyr (moderat tilgang)  
+- **Option 1C**: 25 DKK gebyr (eksempel niveau)
+- **Option 1D**: 30 DKK gebyr (højere margin)
+- **Option 1E**: 35 DKK gebyr (premium pricing)
+
+**Tærskel optimering**:
+- **Option 2A**: Behold 130 kr tærskel med gebyr
+- **Option 2B**: Hæv til 150 kr tærskel (foreslået)
+- **Option 2C**: Hæv til 200 kr tærskel (aggressiv)
+
+**Alternative strategier**:
+- **Option 3**: Loyalitets-baseret gebyr struktur
+- **Option 4**: Service-tier implementering
+- **Option 5**: Optimize fulfillment costs uden gebyr
+- **Option 6**: Status quo med proces forbedringer
+
+**Sammenlignende analyse**: ROI, kundeimpact og strategisk alignment for alle optioner
 
 ### 4. Financial Business Case
 **Comprehensive Financial Analysis**

@@ -1,0 +1,113 @@
+{
+  "comment": "Kop og Kande Click & Collect Fee Business Case Analysis",
+  "analysis_type": "pricing_strategy_analysis",
+  "language": "danish",
+  "agents": 20,
+  "session": "kop_kande_cc_analysis",
+  
+  "business_context": {
+    "company": "Kop og Kande",
+    "company_profile": {
+      "type": "Retail chain",
+      "business_model": "Omnichannel lifestyle retailer",
+      "target_market": "Danish lifestyle consumers",
+      "product_description": "Lifestyle products with Click & Collect service",
+      "stage": "Established retailer",
+      "competitive_advantage": "Physical store network with online integration"
+    },
+    "initiative": "Click & Collect Fee Implementation Analysis",
+    "user_request": "Analyze impact of implementing 25 DKK fee on C&C orders under 150 DKK",
+    
+    "current_situation": {
+      "problem_statement": "15.9% of all C&C orders under 130 DKK are unprofitable",
+      "financial_impact": "336,000 DKK annual cost for small orders",
+      "order_metrics": {
+        "small_orders_percentage": "15.9%",
+        "small_order_revenue_2024": "615,327 DKK",
+        "average_small_order_value": "69 DKK ex. moms",
+        "annual_cost_small_orders": "336,000 DKK",
+        "store_upsell_revenue": "55,722 DKK",
+        "store_upsell_db": "22,289 DKK",
+        "customer_mix": "40% known customers, 60% new/occasional"
+      },
+      "proposed_solution": "25 DKK fee on orders under 150 DKK",
+      "cac_benchmark": "Typical CAC for lifestyle stores: 150-300 DKK"
+    },
+    
+    "business_question": {
+      "primary": "Er 25 DKK gebyr på små C&C ordre en rentabel strategi?",
+      "financial_focus": "Hvordan påvirker gebyret bundlinjen vs. nuværende tab?",
+      "customer_focus": "Hvad er risikoen for kundetab vs. CAC for livstilsbutikker?",
+      "operational_focus": "Hvordan optimeres ordrestørrelse og operationel effektivitet?",
+      "expected_outcome": "Data-driven business case for fee implementation"
+    },
+    
+    "analysis_objectives": [
+      "Beregn ROI for 25 DKK gebyr på ordrer under 150 DKK",
+      "Analyser kundeadfærd og churn risk vs. CAC",
+      "Model scenarie-analyse for forskellige gebyr-niveauer",
+      "Evaluer operational efficiency gains",
+      "Sammenlign fee-strategi med alternative løsninger",
+      "Udvikl implementeringsstrategi med risikomitigering"
+    ]
+  },
+  
+  "agent_specializations": {
+    "financial_modeling": 3,
+    "customer_analytics": 3,
+    "pricing_strategy": 3,
+    "operations_analytics": 2,
+    "risk_assessment": 2,
+    "competitive_analysis": 2,
+    "strategic_planning": 2,
+    "implementation_planning": 2,
+    "qa_validation": 1
+  },
+  
+  "analysis_parameters": {
+    "current_metrics": {
+      "small_order_threshold": "130 DKK incl. moms (104 DKK ex. moms)",
+      "small_orders_share": 0.159,
+      "annual_small_order_revenue": 615327,
+      "avg_small_order_value": 69,
+      "annual_handling_cost": 336000,
+      "store_upsell_revenue": 55722,
+      "store_upsell_db": 22289,
+      "net_annual_loss": 313711
+    },
+    "proposed_fee": 25,
+    "fee_threshold": "150 DKK",
+    "customer_segments": {
+      "known_customers": 0.40,
+      "new_occasional": 0.60
+    },
+    "cac_benchmark": {
+      "lifestyle_stores_min": 150,
+      "lifestyle_stores_max": 300
+    }
+  },
+  
+  "scenario_analysis": {
+    "fee_elasticity_scenarios": [
+      {"reduction_rate": 0.60, "description": "Conservative - 60% reduction in small orders"},
+      {"reduction_rate": 0.70, "description": "Moderate - 70% reduction in small orders"},
+      {"reduction_rate": 0.80, "description": "Optimistic - 80% reduction in small orders"}
+    ],
+    "alternative_strategies": [
+      "Free shipping threshold increase",
+      "Bundle incentives",
+      "Loyalty program adjustments",
+      "Order consolidation campaigns"
+    ]
+  },
+  
+  "output_requirements": {
+    "language": "danish",
+    "format": "business_case",
+    "include_charts": true,
+    "scenario_analysis": true,
+    "implementation_roadmap": true,
+    "risk_assessment": true,
+    "roi_calculations": true
+  }
+}
