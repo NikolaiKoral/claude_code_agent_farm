@@ -1,18 +1,25 @@
 # Business Analysis Tasks with Excel Data
-# Generated: 2025-07-28T12:22:16.806757
+# Generated: 2025-07-28T13:52:34.632072
 # Analysis Type: business_case_development
 # Language: danish
 
 ## Business Context
 - company: Kop&Kande
+- company_profile:
+  - type: Specialty kitchenware and home goods retailer
+  - brand_positioning: Premium lifestyle brand focused on hygge, personalized service, local expertise
+  - target_customers: Home enthusiasts, kitchen aficionados, gift buyers
+  - store_network: Multiple Danish locations (Frederiksberg, Østerbro, Roskilde, Viborg, Horsens, Fredericia)
+  - unique_value: Specialized staff expertise, curated products, local store autonomy
+  - existing_loyalty: Klub Kop & Kande - FREE membership with exclusive offers
 - initiative: Click & Collect Fee Implementation - Business Case Analysis
-- user_request: Lav mig en business case der viser om det er en god ide at sætte et fee på små c&c ordre, hvis man kigger på hvad den gennemsnitlige CAC ellers er for at få kunder ned i en livstilsbutik
+- user_request: Lav mig en business case der viser om det er en god ide at sætte et fee på små c&c ordre, hvis man kigger på hvad den gennemsnitlige CAC ellers er for at få kunder ned i en livstilsbutik + 40% is known customers
 - current_situation:
-  - problem_statement: Bestyrelsen mener at der kommer for mange små ordre som koster koncernen for mange penge
+  - problem_statement: Bestyrelsen mener at der kommer for mange små ordre som koster koncernen for mange penge (læs webshoppen). 15,9% af alle C&C ordre under 130 kr inkl. moms skal sendes til butikkerne
   - threshold_current: 130 kr inkl. moms (104 kr ex. moms)
   - proposed_threshold: 150 kr
   - proposed_fee: 25 DKK
-  - key_metrics_2024: {'small_order_percentage': '15.9% af alle C&C ordre under 130 kr', 'total_cc_revenue': '615.327 kr omsætning', 'average_order_ex_moms': '69 kr ex. moms', 'annual_handling_cost': '336.000 kr om året at sende små ordre til butikker', 'store_additional_sales': '55.722 kr mersalg ved afhentning', 'store_contribution_margin': '22.289 kr DB i butikker'}
+  - key_metrics_2024: {'small_order_percentage': '15.9% af alle C&C ordre under 130 kr', 'total_cc_revenue': '615.327 kr omsætning', 'average_order_ex_moms': '69 kr ex. moms', 'annual_handling_cost': '336.000 kr om året at sende små ordre til butikker (webshoppen omkostning)', 'store_additional_sales': '55.722 kr mersalg ved afhentning af ordrerne', 'store_contribution_margin': '22.289 kr DB i butikker fra mersalg', 'customer_mix': '40% kendte kunder + 60% nye/occasionelle', 'missing_data': 'Antal ordre under 130 kr fra butikslager (Brian har ferie - kommer senere i juli)'}
 - business_question:
   - primary: Er det en god idé at sætte gebyr på små C&C ordre?
   - cac_focus: Hvad er den gennemsnitlige CAC for at få kunder ned i livstilsbutik?

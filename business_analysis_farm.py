@@ -109,6 +109,31 @@ BUSINESS_AGENT_TYPES = {
         "description": "Multi-agent coordination, insight synthesis, executive reporting, and strategic communication",
         "prompt_focus": "synthesis coordination, executive reporting, strategic insights, communication",
         "excel_sheets": ["synthesis", "executive", "insights", "recommendations"]
+    },
+    "executive_report_generator": {
+        "description": "Board-ready presentation creation, visual storytelling, executive communication, and success metrics",
+        "prompt_focus": "executive presentations, visual storytelling, board communication, success metrics",
+        "excel_sheets": ["executive", "presentations", "metrics", "storytelling"]
+    },
+    "implementation_planning": {
+        "description": "Change management, rollout planning, risk mitigation, and stakeholder communication strategies",
+        "prompt_focus": "implementation planning, change management, rollout strategies, stakeholder engagement",
+        "excel_sheets": ["implementation", "rollout", "change", "stakeholders"]
+    },
+    "financial_audit_compliance": {
+        "description": "Financial calculation auditing, regulatory compliance checking, and audit trail documentation",
+        "prompt_focus": "financial auditing, compliance checking, audit trails, regulatory requirements",
+        "excel_sheets": ["audit", "compliance", "financial", "regulatory"]
+    },
+    "business_case_writer": {
+        "description": "Comprehensive business case documentation, executive summary writing, and decision framework creation",
+        "prompt_focus": "business case writing, executive summaries, decision frameworks, strategic documentation",
+        "excel_sheets": ["business_case", "executive", "decisions", "documentation"]
+    },
+    "implementation_coordinator": {
+        "description": "Project coordination, timeline management, resource allocation, and success tracking for implementation",
+        "prompt_focus": "project coordination, timeline management, resource allocation, implementation tracking",
+        "excel_sheets": ["coordination", "timelines", "resources", "tracking"]
     }
 }
 
@@ -164,6 +189,68 @@ def find_tmux() -> str:
         console.print("Please install tmux: brew install tmux (macOS) or apt install tmux (Ubuntu)")
         sys.exit(1)
     return tmux_path
+
+
+def tmux_send(target: str, data: str, enter: bool = True, update_heartbeat: bool = True) -> None:
+    """Send keystrokes to a tmux pane (binary-safe)"""
+    max_retries = 3
+    base_delay = 0.5
+
+    for attempt in range(max_retries):
+        try:
+            if data:
+                # Use tmux buffer API for robustness with large payloads
+                # Create a temporary file with the data to avoid shell-quoting issues
+                import uuid
+
+                with tempfile.NamedTemporaryFile("w", delete=False, encoding="utf-8") as tmp:
+                    tmp.write(data)
+                    tmp_path = tmp.name
+
+                buf_name = f"businessfarm_{uuid.uuid4().hex[:8]}"
+
+                try:
+                    # Load the data into a tmux buffer
+                    run(f"tmux load-buffer -b {buf_name} {shlex.quote(tmp_path)}", quiet=True)
+                    # Paste the buffer into the target pane and delete the buffer (-d)
+                    run(f"tmux paste-buffer -d -b {buf_name} -t {target}", quiet=True)
+                finally:
+                    # Clean up temp file
+                    with contextlib.suppress(FileNotFoundError):
+                        os.unlink(tmp_path)
+
+                # CRITICAL: Small delay between pasting and Enter for Claude Code
+                if enter:
+                    time.sleep(0.2)
+
+            if enter:
+                run(f"tmux send-keys -t {target} C-m", quiet=True)
+            
+            # Update heartbeat if requested (default True) - simplified for business farm
+            break
+        except subprocess.CalledProcessError:
+            if attempt < max_retries - 1:
+                # Exponential backoff: 0.5s, 1s, 2s
+                time.sleep(base_delay * (2**attempt))
+            else:
+                raise
+
+
+def tmux_capture(target: str) -> str:
+    """Capture content from a tmux pane"""
+    max_retries = 3
+
+    for attempt in range(max_retries):
+        try:
+            _, stdout, _ = run(f"tmux capture-pane -t {target} -p", quiet=True, capture=True)
+            return stdout
+        except subprocess.CalledProcessError:
+            if attempt < max_retries - 1:
+                time.sleep(0.2)
+            else:
+                # Return empty string on persistent failure
+                return ""
+    return ""
 
 
 def ensure_session_exists(session: str, tmux_mouse: bool = True) -> None:
@@ -826,16 +913,25 @@ Reference specific numbers, perform calculations, and base your analysis on the 
         # Create tmux pane
         run(f"tmux new-window -t {self.session} -n {pane_name}")
         
-        # Launch Claude Code with specialized prompt that includes data access
-        # Escape quotes properly for shell execution
-        escaped_prompt = specialized_prompt.replace("'", "'\"'\"'")
-        claude_cmd = f"cd {self.project_path} && claude '{escaped_prompt}'"
-        run(f"tmux send-keys -t {self.session}:{pane_name} '{claude_cmd}' Enter")
+        # Wait for shell prompt to be ready
+        time.sleep(2)
+        
+        # Change to project directory first
+        pane_target = f"{self.session}:{pane_name}"
+        tmux_send(pane_target, f"cd {shlex.quote(str(self.project_path))}")
+        time.sleep(0.5)
+        
+        # Launch Claude Code using the robust tmux_send function
+        tmux_send(pane_target, f"claude")
+        time.sleep(3)  # Wait for Claude Code to start
+        
+        # Send the specialized prompt using tmux_send (avoids all shell escaping issues)
+        tmux_send(pane_target, specialized_prompt, enter=True)
         
         # Send command to read the business analysis file with Excel data
-        time.sleep(2)  # Wait for Claude Code to start
+        time.sleep(2)  # Wait for Claude Code to process prompt
         read_data_cmd = f"Please start by reading and analyzing the file {self.business_analysis_file.name} which contains the Excel data for your specialized analysis."
-        run(f"tmux send-keys -t {self.session}:{pane_name} '{read_data_cmd}' Enter")
+        tmux_send(pane_target, read_data_cmd, enter=True)
         
         # Store pane mapping
         self.pane_mapping[agent_id] = pane_name

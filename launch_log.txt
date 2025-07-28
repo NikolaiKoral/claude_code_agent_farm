@@ -1,0 +1,64 @@
+Loaded configuration from 
+/Users/nikolailind/Documents/GitHub/claude_code_agent_farm/kop_kande_config.json
+🏢 Starting Business Analysis Agent Farm
+────────────────────── Generating Business Analysis Tasks ──────────────────────
+Processing Excel files for business analysis...
+Generated 10 business analysis tasks with full Excel data
+Setting up tmux session: kop_kande_analysis
+Creating tmux session 'kop_kande_analysis'
+Launching 35 business analysis agents...
+[13:28:12] tmux new-window -t kop_kande_analysis   business_analysis_farm.py:149
+           -n agent_0_financial_modeling                                        
+Launched financial_modeling agent (Agent 0) with Excel data access
+[13:28:31] tmux new-window -t kop_kande_analysis   business_analysis_farm.py:149
+           -n agent_1_customer_analytics                                        
+Launched customer_analytics agent (Agent 1) with Excel data access
+[13:28:49] tmux new-window -t kop_kande_analysis   business_analysis_farm.py:149
+           -n agent_2_pricing_strategy                                          
+Launched pricing_strategy agent (Agent 2) with Excel data access
+[13:29:08] tmux new-window -t kop_kande_analysis   business_analysis_farm.py:149
+           -n agent_3_market_intelligence                                       
+Launched market_intelligence agent (Agent 3) with Excel data access
+[13:29:26] tmux new-window -t kop_kande_analysis   business_analysis_farm.py:149
+           -n agent_4_operations_analytics                                      
+Launched operations_analytics agent (Agent 4) with Excel data access
+[13:29:45] tmux new-window -t kop_kande_analysis   business_analysis_farm.py:149
+           -n agent_5_risk_assessment                                           
+Launched risk_assessment agent (Agent 5) with Excel data access
+[13:30:03] tmux new-window -t kop_kande_analysis   business_analysis_farm.py:149
+           -n agent_6_strategic_planning                                        
+Launched strategic_planning agent (Agent 6) with Excel data access
+[13:30:22] tmux new-window -t kop_kande_analysis   business_analysis_farm.py:149
+           -n agent_7_data_integration                                          
+Launched data_integration agent (Agent 7) with Excel data access
+[13:30:40] tmux new-window -t kop_kande_analysis   business_analysis_farm.py:149
+           -n agent_8_qa_validation                                             
+Launched qa_validation agent (Agent 8) with Excel data access
+[13:30:59] tmux new-window -t kop_kande_analysis   business_analysis_farm.py:149
+           -n agent_9_synthesis_coordination                                    
+Launched synthesis_coordination agent (Agent 9) with Excel data access
+[13:31:17] tmux new-window -t kop_kande_analysis   business_analysis_farm.py:149
+           -n agent_10_executive_report_generator                               
+Launched executive_report_generator agent (Agent 10) with Excel data access
+[13:31:36] tmux new-window -t kop_kande_analysis   business_analysis_farm.py:149
+           -n agent_11_implementation_planning                                  
+Launched implementation_planning agent (Agent 11) with Excel data access
+[13:31:54] tmux new-window -t kop_kande_analysis   business_analysis_farm.py:149
+           -n agent_12_financial_audit_compliance                               
+Launched financial_audit_compliance agent (Agent 12) with Excel data access
+[13:32:13] tmux new-window -t kop_kande_analysis   business_analysis_farm.py:149
+           -n agent_13_business_case_writer                                     
+Launched business_case_writer agent (Agent 13) with Excel data access
+[13:32:31] tmux new-window -t kop_kande_analysis   business_analysis_farm.py:149
+           -n agent_14_implementation_coordinator                               
+Launched implementation_coordinator agent (Agent 14) with Excel data access
+[13:32:50] tmux new-window -t kop_kande_analysis   business_analysis_farm.py:149
+           -n agent_15_financial_modeling                                       
+Error: Command '['tmux', 'paste-buffer', '-d', '-b', 'businessfarm_bcb015d1', 
+'-t', 'kop_kande_analysis:agent_15_financial_modeling']' returned non-zero exit 
+status 1.
+Cleaning up...
+Business Analysis Farm failed: Command '['tmux', 'paste-buffer', '-d', '-b', 
+'businessfarm_bcb015d1', '-t', 
+'kop_kande_analysis:agent_15_financial_modeling']' returned non-zero exit status
+1.

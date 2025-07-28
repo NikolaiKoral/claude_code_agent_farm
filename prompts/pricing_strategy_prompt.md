@@ -39,14 +39,47 @@ Optimer:
 - **Dynamic pricing** muligheder
 - **Bundle pricing** med andre services
 
-## PRICING MODELLER AT TESTE
+## 🚀 KREATIVE PRICING ALTERNATIVER
+**MANDATORY**: Udforsk innovative alternativer der udnytter Kop & Kande's brand og loyalitet:
 
-### Model 1: Flat Fee Structure
+### Model 1: Loyalitets-Differentiated Pricing
+- **Klub Kop & Kande medlemmer**: GRATIS C&C på ordrer under 150 DKK
+- **Non-medlemmer**: 25 DKK gebyr
+- **Premium medlemmer**: Gratis + ekspres service
+- **Rationale**: Driver membership signups og styrker brand loyalitet
+
+### Model 2: "Hygge Experience" Service Tiers
+- **Standard C&C**: 25 DKK (inkluderer SMS notifikation)
+- **Hygge Premium**: 50 DKK (inkluderer personlig produktrådgivning + gave wrapping)
+- **Kitchen Expert**: 75 DKK (inkluderer 15 min telefonkonsultation om produktanvendelse)
+- **Rationale**: Vender gebyr til premium service oplevelse
+
+### Model 3: Point-to-Waive System
+- **Optjen points**: 1 point per 10 DKK køb
+- **C&C gebyr**: 25 point eller 25 DKK
+- **Bonus points**: Dobbelt points på små ordrer for at incitere til større indkøb
+- **Rationale**: Gamification og loyalitet gennem engagement
+
+### Model 4: Abonnement/Subscription Model
+- **"Klub Plus" membership**: 99 DKK/år for unlimited gratis C&C
+- **Familie membership**: 149 DKK/år + rabatter
+- **Business membership**: 199 DKK/år + priority service
+- **Rationale**: Forudsigelig revenue stream og øget customer lifetime value
+
+### Model 5: Hybrid bundling
+- **Seasonal boxes**: 25 DKK C&C bliver del af kuraterede produktpakker
+- **Gift service**: C&C inkluderet i gave wrapping service
+- **Cross-selling**: "Gratis C&C hvis du køber kitchen accessories over 100 DKK"
+- **Rationale**: Cross-selling og average order value optimization
+
+## TRADITIONELLE PRICING MODELLER
+
+### Model A: Flat Fee Structure
 - 25 DKK på alle ordrer under 150 DKK
 - Simpel implementation
 - Klar kommunikation
 
-### Model 2: Sliding Scale
+### Model B: Sliding Scale
 - 0-50 DKK ordre: 15 DKK fee
 - 50-100 DKK ordre: 25 DKK fee  
 - 100-150 DKK ordre: 35 DKK fee
