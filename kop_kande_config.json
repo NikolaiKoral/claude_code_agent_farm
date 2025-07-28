@@ -1,0 +1,95 @@
+{
+  "comment": "Configuration for Kop&Kande Click & Collect Fee Analysis",
+  "analysis_type": "business_case_development",
+  "language": "danish",
+  "agents": 25,
+  "session": "kop_kande_analysis",
+  
+  "excel_files": [
+    "/Users/nikolailind/Downloads/Beregning C&C.xlsx"
+  ],
+  
+  "business_context": {
+    "company": "Kop&Kande",
+    "initiative": "Click & Collect Fee Implementation - Business Case Analysis",
+    "user_request": "Lav mig en business case der viser om det er en god ide at sætte et fee på små c&c ordre, hvis man kigger på hvad den gennemsnitlige CAC ellers er for at få kunder ned i en livstilsbutik",
+    
+    "current_situation": {
+      "problem_statement": "Bestyrelsen mener at der kommer for mange små ordre som koster koncernen for mange penge",
+      "threshold_current": "130 kr inkl. moms (104 kr ex. moms)",
+      "proposed_threshold": "150 kr",
+      "proposed_fee": "25 DKK",
+      
+      "key_metrics_2024": {
+        "small_order_percentage": "15.9% af alle C&C ordre under 130 kr",
+        "total_cc_revenue": "615.327 kr omsætning",
+        "average_order_ex_moms": "69 kr ex. moms",
+        "annual_handling_cost": "336.000 kr om året at sende små ordre til butikker",
+        "store_additional_sales": "55.722 kr mersalg ved afhentning",
+        "store_contribution_margin": "22.289 kr DB i butikker"
+      }
+    },
+    
+    "business_question": {
+      "primary": "Er det en god idé at sætte gebyr på små C&C ordre?",
+      "cac_focus": "Hvad er den gennemsnitlige CAC for at få kunder ned i livstilsbutik?",
+      "expected_outcome": "Gebyret vil fjerne mange små ordrer, men bundlinjen bliver bedre"
+    },
+    
+    "analysis_objectives": [
+      "Beregn ROI ved implementering af 25 DKK gebyr på ordrer under 150 DKK",
+      "Sammenlign gebyr-strategi med gennemsnitlig CAC for livstilsbutik",
+      "Analyser impact på customer lifetime value og retention",
+      "Kvantificer effekt på bundlinje vs. kundetab",
+      "Udvikl anbefaling baseret på CAC vs. gebyr trade-off"
+    ]
+  },
+  
+  "agent_specializations": {
+    "financial_modeling": 4,
+    "customer_analytics": 3,
+    "pricing_strategy": 3,
+    "market_intelligence": 2,
+    "operations_analytics": 3,
+    "risk_assessment": 2,
+    "strategic_planning": 2,
+    "data_integration": 2,
+    "qa_validation": 2,
+    "synthesis_coordination": 2
+  },
+  
+  "analysis_parameters": {
+    "time_horizon": "24 months",
+    "discount_rate": 0.08,
+    "confidence_level": 0.95,
+    "sensitivity_ranges": {
+      "fee_acceptance_rate": [0.60, 0.75, 0.90],
+      "order_size_impact": [-0.15, -0.05, 0.05],
+      "customer_churn": [0.02, 0.08, 0.15]
+    }
+  },
+  
+  "output_requirements": {
+    "language": "danish",
+    "format": "executive_summary",
+    "include_charts": true,
+    "confidence_intervals": true,
+    "scenario_analysis": true,
+    "implementation_roadmap": true
+  },
+  
+  "tmux_settings": {
+    "tmux_mouse": true,
+    "tmux_kill_on_exit": true,
+    "check_interval": 15,
+    "stagger": 8.0,
+    "wait_after_cc": 20.0
+  },
+  
+  "monitoring_settings": {
+    "auto_restart": true,
+    "max_errors": 3,
+    "idle_timeout": 90,
+    "context_threshold": 25
+  }
+}
