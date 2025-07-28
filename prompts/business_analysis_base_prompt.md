@@ -44,7 +44,27 @@ Læs filen `business_analysis_tasks.txt` som indeholder:
 - Data kvalitetsvurderinger og nøglemønstre
 
 ## OPGAVE
-Udfør en dybdegående analyse inden for dit specialeområde og levér indsigter, der understøtter beslutningstagning om gebyrimplementering.
+Udfør en dybdegående analyse inden for dit specialeområde og levér indsigter, der understøtter strategisk evaluering og beslutningstagning.
+
+## KRITISK PROMPT ANALYSE
+**VIGTIGT**: Forstå den oprindelige bruger kontekst korrekt:
+
+### Brugerens Faktiske Spørgsmål
+"Hvad vil I sige til, at der kommer et gebyr på Click & Collect ordre på under 150 kr? F.eks. 25 kr."
+
+**Nøgle Forståelse**:
+- **"F.eks. 25 kr"** = EKSEMPEL at udforske, IKKE fast krav
+- **"Hvad vil I sige til"** = Anmodning om strategisk evaluering, ikke validering
+- **"Hvad tænker I?"** = Åben strategisk diskussion ønskes
+- **"Til orientering har bestyrelsen bedt mig"** = Bestyrelsesdirektiv kontekst
+- **"webshoppen" vs "butikkerne"** = Forskellige omkostningscentre og perspektiver
+
+### Din Analyse Skal
+1. **EVALUERE forskellige gebyr niveauer** (ikke kun validere 25 DKK)
+2. **OPTIMERE tærskel værdier** (130 kr vs 150 kr vs alternativer)  
+3. **SAMMENLIGNE med CAC** som specifikt anmodet ("hvad den gennemsnitlige CAC ellers er")
+4. **UDFORSKE kreative alternativer** til standard gebyr struktur
+5. **ANALYSERE strategisk** snarere end implementerings validering
 
 ## ANALYSEMETODE
 1. **Dataanalyse**: Undersøg relevante data fra Excel-filerne
