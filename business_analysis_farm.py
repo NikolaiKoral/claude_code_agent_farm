@@ -929,8 +929,8 @@ Reference specific numbers, perform calculations, and base your analysis on the 
         tmux_send(pane_target, f"cd {shlex.quote(str(self.project_path))}")
         time.sleep(0.5)
         
-        # Launch Claude Code using the robust tmux_send function
-        tmux_send(pane_target, f"claude")
+        # Launch Claude Code with streaming output for real-time monitoring
+        tmux_send(pane_target, f"claude --output-format stream-json --verbose")
         time.sleep(3)  # Wait for Claude Code to start
         
         # Send the specialized prompt using tmux_send (avoids all shell escaping issues)
