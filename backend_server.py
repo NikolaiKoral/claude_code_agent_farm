@@ -66,6 +66,7 @@ class SessionStatus(BaseModel):
     results_available: bool = False
     excel_files: List[str] = []
     message: str = ""
+    analysis_results: Optional[Dict[str, Any]] = None
 
 # ─────────────────────────────── Global State ────────────────────────────── #
 
@@ -84,9 +85,36 @@ app.add_middleware(
 active_sessions: Dict[str, SessionStatus] = {}
 websocket_connections: Dict[str, WebSocket] = {}
 
-# Ensure uploads directory exists
+# Ensure uploads and results directories exist
 UPLOADS_DIR = Path("uploads")
 UPLOADS_DIR.mkdir(exist_ok=True)
+
+RESULTS_DIR = Path("analysis_results")
+RESULTS_DIR.mkdir(exist_ok=True)
+
+def save_analysis_results(session_id: str, results: Dict[str, Any]):
+    """Save analysis results to disk"""
+    try:
+        results_file = RESULTS_DIR / f"{session_id}.json"
+        with open(results_file, 'w', encoding='utf-8') as f:
+            json.dump(results, f, indent=2, default=str)
+        print(f"[DEBUG] Saved analysis results for session {session_id}")
+    except Exception as e:
+        print(f"[ERROR] Failed to save analysis results for session {session_id}: {e}")
+
+def load_analysis_results(session_id: str) -> Optional[Dict[str, Any]]:
+    """Load analysis results from disk"""
+    try:
+        results_file = RESULTS_DIR / f"{session_id}.json"
+        if results_file.exists():
+            with open(results_file, 'r', encoding='utf-8') as f:
+                results = json.load(f)
+            print(f"[DEBUG] Loaded analysis results for session {session_id}")
+            return results
+        return None
+    except Exception as e:
+        print(f"[ERROR] Failed to load analysis results for session {session_id}: {e}")
+        return None
 
 # ─────────────────────────────── Excel Processing Engine ────────────────────────────── #
 
@@ -916,7 +944,20 @@ async def run_claude_sdk_analysis(session_id: str, request: AnalysisRequest):
         session.end_time = datetime.now()
         session.results_available = True
         session.message = "Claude SDK analysis completed successfully"
+        
+        # Store results in session and save to disk for persistence
+        session.analysis_results = results
+        save_analysis_results(session_id, results)
+        
         await notify_websocket_clients(session_id, session)
+        
+        # Send the consolidated final analysis report
+        await notify_websocket_clients(session_id, {
+            "type": "final_analysis_report",
+            "session_id": session_id,
+            "results": results,
+            "message": "Analysis complete - final report ready"
+        })
         
         await notify_websocket_clients(session_id, {
             "type": "progress",
@@ -925,7 +966,7 @@ async def run_claude_sdk_analysis(session_id: str, request: AnalysisRequest):
             "message": "🎉 Claude SDK business analysis completed successfully!"
         })
         
-        print(f"[DEBUG] Claude SDK analysis completed for session {session_id}")
+        print(f"[DEBUG] Claude SDK analysis completed for session {session_id} with results: {len(results.get('results', {}))}")
         
     except Exception as e:
         # Handle errors
@@ -1050,6 +1091,46 @@ async def stop_analysis(session_id: str):
 async def get_sessions():
     """Get all analysis sessions"""
     return list(active_sessions.values())
+
+@app.get("/api/sessions/{session_id}/results")
+async def get_session_results(session_id: str):
+    """Get analysis results for a specific session"""
+    try:
+        if session_id not in active_sessions:
+            raise HTTPException(status_code=404, detail="Session not found")
+        
+        session = active_sessions[session_id]
+        
+        if not session.results_available:
+            raise HTTPException(status_code=404, detail="Results not available yet")
+        
+        # Try to get results from session first, then from disk
+        results = None
+        if hasattr(session, 'analysis_results') and session.analysis_results is not None:
+            results = session.analysis_results
+            print(f"[DEBUG] Session {session_id}: Found results in memory")
+        else:
+            # Try to load from disk
+            results = load_analysis_results(session_id)
+            if results:
+                # Cache in session for future requests
+                session.analysis_results = results
+                print(f"[DEBUG] Session {session_id}: Loaded results from disk")
+        
+        if results is None:
+            raise HTTPException(status_code=404, detail="Analysis results not found")
+        
+        return {
+            "session_id": session_id,
+            "status": session.status,
+            "results": results,
+            "start_time": session.start_time,
+            "end_time": session.end_time
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 # ─────────────────────────────── WebSocket Support ────────────────────────────── #
 
