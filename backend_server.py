@@ -15,6 +15,9 @@ from typing import Dict, List, Optional, Any
 import tempfile
 import shutil
 from dotenv import load_dotenv
+import pandas as pd
+import numpy as np
+from decimal import Decimal
 
 # Load environment variables from .env file
 load_dotenv()
@@ -85,11 +88,344 @@ websocket_connections: Dict[str, WebSocket] = {}
 UPLOADS_DIR = Path("uploads")
 UPLOADS_DIR.mkdir(exist_ok=True)
 
+# ─────────────────────────────── Excel Processing Engine ────────────────────────────── #
+
+class ExcelParsingEngine:
+    """Enhanced Excel parsing with business intelligence extraction"""
+    
+    def __init__(self):
+        self.danish_financial_terms = [
+            'pris', 'beløb', 'omkost', 'gebyr', 'omsæt', 'indtægt', 'udgifte', 'profit', 
+            'margin', 'dkk', 'kr', 'kroner', 'moms', 'ex moms', 'inkl moms', 'total', 
+            'sum', 'gns', 'gennemsnit', 'andel', 'procent', 'rabat', 'underskud', 'db'
+        ]
+        
+        self.english_financial_terms = [
+            'price', 'amount', 'cost', 'fee', 'revenue', 'income', 'expense', 'profit',
+            'margin', 'total', 'sum', 'average', 'avg', 'percentage', 'percent', 'discount',
+            'loss', 'contribution', 'gross', 'net'
+        ]
+        
+        self.customer_terms = [
+            'kunde', 'customer', 'order', 'ordre', 'segment', 'bruger', 'user', 
+            'køb', 'purchase', 'antal', 'count', 'frequency', 'hyppighed'
+        ]
+        
+        self.operational_terms = [
+            'process', 'proces', 'tid', 'time', 'kapacitet', 'capacity', 'effektivitet',
+            'efficiency', 'volumen', 'volume', 'lager', 'stock', 'inventory'
+        ]
+        
+    def parse_excel_file(self, file_path: str) -> Dict[str, Any]:
+        """Parse Excel file and extract comprehensive business data"""
+        try:
+            # Read all sheets
+            excel_data = pd.read_excel(file_path, sheet_name=None, engine='openpyxl')
+            
+            # Process each sheet
+            parsed_sheets = {}
+            business_insights = []
+            key_metrics = {}
+            
+            for sheet_name, df in excel_data.items():
+                sheet_analysis = self._analyze_sheet(df, sheet_name)
+                parsed_sheets[sheet_name] = sheet_analysis
+                
+                # Collect business insights
+                business_insights.extend(sheet_analysis.get('insights', []))
+                
+                # Collect key metrics
+                if sheet_analysis.get('key_metrics'):
+                    key_metrics[sheet_name] = sheet_analysis['key_metrics']
+            
+            # Create comprehensive result
+            result = {
+                "file_info": {
+                    "name": Path(file_path).name,
+                    "size": Path(file_path).stat().st_size,
+                    "sheet_count": len(parsed_sheets),
+                    "sheet_names": list(parsed_sheets.keys())
+                },
+                "parsed_data": parsed_sheets,
+                "business_summary": {
+                    "key_metrics": key_metrics,
+                    "insights": business_insights,
+                    "data_quality": self._assess_data_quality(parsed_sheets),
+                    "business_context": self._extract_business_context(parsed_sheets)
+                }
+            }
+            
+            return result
+            
+        except Exception as e:
+            raise Exception(f"Excel parsing failed: {str(e)}")
+    
+    def _analyze_sheet(self, df: pd.DataFrame, sheet_name: str) -> Dict[str, Any]:
+        """Analyze individual Excel sheet"""
+        # Clean the DataFrame
+        df_cleaned = df.dropna(how='all').dropna(axis=1, how='all')
+        
+        if df_cleaned.empty:
+            return {
+                "sheet_name": sheet_name,
+                "empty": True,
+                "message": "Sheet is empty or contains no usable data"
+            }
+        
+        # Convert DataFrame to JSON-serializable format
+        data_records = []
+        for idx, row in df_cleaned.iterrows():
+            record = {}
+            for col in df_cleaned.columns:
+                value = row[col]
+                # Handle different data types
+                if pd.isna(value):
+                    record[str(col)] = None
+                elif isinstance(value, (np.integer, int)):
+                    record[str(col)] = int(value)
+                elif isinstance(value, (np.floating, float)):
+                    record[str(col)] = float(value) if not np.isnan(value) else None
+                elif isinstance(value, pd.Timestamp):
+                    record[str(col)] = value.isoformat()
+                else:
+                    record[str(col)] = str(value)
+            data_records.append(record)
+        
+        # Analyze columns
+        column_analysis = {}
+        for col in df_cleaned.columns:
+            col_data = df_cleaned[col].dropna()
+            column_analysis[str(col)] = self._analyze_column(col_data, str(col))
+        
+        # Extract business insights
+        insights = self._extract_sheet_insights(df_cleaned, sheet_name)
+        
+        # Calculate key metrics
+        key_metrics = self._calculate_key_metrics(df_cleaned)
+        
+        return {
+            "sheet_name": sheet_name,
+            "dimensions": {
+                "rows": len(df_cleaned),
+                "columns": len(df_cleaned.columns)
+            },
+            "columns": [str(col) for col in df_cleaned.columns],
+            "data": data_records,
+            "column_analysis": column_analysis,
+            "key_metrics": key_metrics,
+            "insights": insights,
+            "data_types": self._get_data_types(df_cleaned)
+        }
+    
+    def _analyze_column(self, col_data: pd.Series, col_name: str) -> Dict[str, Any]:
+        """Analyze individual column"""
+        analysis = {
+            "name": col_name,
+            "count": len(col_data),
+            "non_null_count": col_data.count(),
+            "data_type": str(col_data.dtype),
+            "business_category": self._categorize_business_column(col_name)
+        }
+        
+        # Numeric analysis
+        if pd.api.types.is_numeric_dtype(col_data):
+            analysis.update({
+                "statistics": {
+                    "mean": float(col_data.mean()),
+                    "median": float(col_data.median()),
+                    "std": float(col_data.std()) if len(col_data) > 1 else 0,
+                    "min": float(col_data.min()),
+                    "max": float(col_data.max()),
+                    "sum": float(col_data.sum())
+                },
+                "is_financial": self._is_financial_column(col_name, col_data),
+                "is_percentage": self._is_percentage_column(col_data),
+                "currency_detected": self._detect_currency(col_name, col_data)
+            })
+        
+        # Categorical analysis
+        elif pd.api.types.is_object_dtype(col_data):
+            unique_values = col_data.unique()
+            analysis.update({
+                "unique_count": len(unique_values),
+                "unique_values": [str(v) for v in unique_values[:10]],  # First 10 values
+                "is_categorical": len(unique_values) <= 20,
+                "most_common": str(col_data.mode().iloc[0]) if len(col_data.mode()) > 0 else None
+            })
+        
+        return analysis
+    
+    def _categorize_business_column(self, col_name: str) -> str:
+        """Categorize column based on business context"""
+        col_lower = col_name.lower()
+        
+        # Check financial terms
+        if any(term in col_lower for term in self.danish_financial_terms + self.english_financial_terms):
+            return "financial"
+        
+        # Check customer terms
+        if any(term in col_lower for term in self.customer_terms):
+            return "customer"
+        
+        # Check operational terms
+        if any(term in col_lower for term in self.operational_terms):
+            return "operational"
+        
+        return "general"
+    
+    def _is_financial_column(self, col_name: str, col_data: pd.Series) -> bool:
+        """Determine if column contains financial data"""
+        col_lower = col_name.lower()
+        
+        # Check name patterns
+        if any(term in col_lower for term in self.danish_financial_terms + self.english_financial_terms):
+            return True
+        
+        # Check value patterns (large numbers often indicate financial data)
+        if pd.api.types.is_numeric_dtype(col_data):
+            max_val = col_data.max()
+            if max_val > 1000:  # Likely financial if max > 1000
+                return True
+        
+        return False
+    
+    def _is_percentage_column(self, col_data: pd.Series) -> bool:
+        """Determine if column contains percentage data"""
+        if not pd.api.types.is_numeric_dtype(col_data):
+            return False
+        
+        max_val = col_data.max()
+        min_val = col_data.min()
+        
+        # Check if values are in 0-1 range (decimal percentages)
+        if max_val <= 1.0 and min_val >= 0:
+            return True
+        
+        # Check if values are in 0-100 range
+        if max_val <= 100 and min_val >= 0 and col_data.mean() < 50:
+            return True
+        
+        return False
+    
+    def _detect_currency(self, col_name: str, col_data: pd.Series) -> str:
+        """Detect currency type"""
+        col_lower = col_name.lower()
+        
+        if 'dkk' in col_lower or 'kr' in col_lower or 'kroner' in col_lower:
+            return "DKK"
+        elif 'eur' in col_lower or 'euro' in col_lower:
+            return "EUR"
+        elif 'usd' in col_lower or 'dollar' in col_lower:
+            return "USD"
+        
+        return "unknown"
+    
+    def _extract_sheet_insights(self, df: pd.DataFrame, sheet_name: str) -> List[str]:
+        """Extract business insights from sheet"""
+        insights = []
+        
+        # Financial insights
+        financial_cols = [col for col in df.columns if self._is_financial_column(str(col), df[col])]
+        if financial_cols:
+            insights.append(f"Sheet '{sheet_name}' contains {len(financial_cols)} financial metrics: {', '.join(map(str, financial_cols[:3]))}")
+        
+        # Data size insights
+        if len(df) > 1000:
+            insights.append(f"Large dataset with {len(df)} records - suitable for statistical analysis")
+        elif len(df) < 10:
+            insights.append(f"Small dataset with {len(df)} records - may require careful interpretation")
+        
+        # Missing data insights
+        missing_data_cols = [col for col in df.columns if df[col].isna().sum() > len(df) * 0.5]
+        if missing_data_cols:
+            insights.append(f"High missing data in columns: {', '.join(map(str, missing_data_cols[:3]))}")
+        
+        return insights
+    
+    def _calculate_key_metrics(self, df: pd.DataFrame) -> Dict[str, Any]:
+        """Calculate key business metrics from the data"""
+        metrics = {}
+        
+        # Find potential revenue/cost columns
+        numeric_cols = df.select_dtypes(include=[np.number]).columns
+        for col in numeric_cols:
+            col_name = str(col).lower()
+            if any(term in col_name for term in ['total', 'sum', 'omsæt', 'revenue', 'cost', 'omkost']):
+                col_data = df[col].dropna()
+                if len(col_data) > 0:
+                    metrics[str(col)] = {
+                        "total": float(col_data.sum()),
+                        "average": float(col_data.mean()),
+                        "count": len(col_data)
+                    }
+        
+        return metrics
+    
+    def _get_data_types(self, df: pd.DataFrame) -> Dict[str, str]:
+        """Get data types for all columns"""
+        return {str(col): str(dtype) for col, dtype in df.dtypes.items()}
+    
+    def _assess_data_quality(self, parsed_sheets: Dict[str, Any]) -> Dict[str, Any]:
+        """Assess overall data quality"""
+        total_records = sum(sheet.get('dimensions', {}).get('rows', 0) for sheet in parsed_sheets.values())
+        
+        quality_score = 0
+        issues = []
+        
+        for sheet_name, sheet_data in parsed_sheets.items():
+            if sheet_data.get('empty'):
+                issues.append(f"Sheet '{sheet_name}' is empty")
+                continue
+            
+            # Check for missing data
+            dimensions = sheet_data.get('dimensions', {})
+            if dimensions.get('rows', 0) > 0:
+                quality_score += 20
+            
+            # Check for financial data
+            if any(col.get('is_financial', False) for col in sheet_data.get('column_analysis', {}).values()):
+                quality_score += 30
+        
+        return {
+            "quality_score": min(quality_score, 100),
+            "total_records": total_records,
+            "issues": issues,
+            "assessment": "Good" if quality_score > 70 else "Fair" if quality_score > 40 else "Poor"
+        }
+    
+    def _extract_business_context(self, parsed_sheets: Dict[str, Any]) -> Dict[str, Any]:
+        """Extract business context from the data"""
+        context = {
+            "industry_indicators": [],
+            "analysis_types": [],
+            "key_business_areas": []
+        }
+        
+        # Analyze all column names to infer business context
+        all_columns = []
+        for sheet_data in parsed_sheets.values():
+            if not sheet_data.get('empty'):
+                all_columns.extend(sheet_data.get('columns', []))
+        
+        column_text = ' '.join(all_columns).lower()
+        
+        # Detect business areas
+        if any(term in column_text for term in ['click', 'collect', 'c&c', 'butik', 'shop']):
+            context['key_business_areas'].append('retail_operations')
+        
+        if any(term in column_text for term in ['kunde', 'customer', 'ordre', 'order']):
+            context['key_business_areas'].append('customer_analysis')
+        
+        if any(term in column_text for term in self.danish_financial_terms[:10]):
+            context['analysis_types'].append('financial_analysis')
+        
+        return context
+
 # ─────────────────────────────── File Upload Handler ────────────────────────────── #
 
 @app.post("/api/upload")
 async def upload_file(file: UploadFile = File(...)):
-    """Handle Excel file uploads from frontend"""
+    """Handle Excel file uploads with immediate parsing and business intelligence extraction"""
     try:
         # Validate file type
         if not file.filename.endswith(('.xlsx', '.xls', '.csv')):
@@ -104,20 +440,53 @@ async def upload_file(file: UploadFile = File(...)):
         with open(file_path, "wb") as buffer:
             shutil.copyfileobj(file.file, buffer)
         
-        return {
+        # Parse Excel file immediately using the enhanced parsing engine
+        parser = ExcelParsingEngine()
+        parsed_data = parser.parse_excel_file(str(file_path))
+        
+        # Save parsed data as JSON for quick access
+        json_filename = f"{file_id}_{file.filename}.json"
+        json_path = UPLOADS_DIR / json_filename
+        
+        with open(json_path, 'w', encoding='utf-8') as json_file:
+            json.dump(parsed_data, json_file, indent=2, ensure_ascii=False)
+        
+        # Return comprehensive response with parsed data
+        response = {
             "file_id": file_id,
             "filename": file.filename,
             "file_path": str(file_path),
+            "json_path": str(json_path),
             "size": file_path.stat().st_size,
-            "uploaded_at": datetime.now().isoformat()
+            "uploaded_at": datetime.now().isoformat(),
+            "parsed_data": parsed_data,
+            "parsing_status": "success",
+            "business_insights": parsed_data.get("business_summary", {}).get("insights", []),
+            "data_quality": parsed_data.get("business_summary", {}).get("data_quality", {}),
+            "sheets_processed": len(parsed_data.get("parsed_data", {}))
         }
+        
+        return response
     
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"File upload failed: {str(e)}")
+        # Return error information but still save the file
+        error_response = {
+            "file_id": file_id if 'file_id' in locals() else str(uuid.uuid4()),
+            "filename": file.filename,
+            "file_path": str(file_path) if 'file_path' in locals() else None,
+            "size": file_path.stat().st_size if 'file_path' in locals() and file_path.exists() else 0,
+            "uploaded_at": datetime.now().isoformat(),
+            "parsing_status": "error",
+            "error": str(e),
+            "parsed_data": None
+        }
+        
+        # Don't raise HTTPException, return error info so file is still accessible
+        return error_response
 
 @app.get("/api/files")
 async def list_uploaded_files():
-    """List all uploaded files, deduplicated by original filename"""
+    """List all uploaded files with parsing status and business insights"""
     try:
         files = []
         seen_files = {}  # Track by original filename to avoid duplicates
@@ -129,11 +498,37 @@ async def list_uploaded_files():
                     filename_parts = file_path.name.split('_', 1)
                     original_filename = filename_parts[1] if len(filename_parts) > 1 else file_path.name
                     
+                    # Check for corresponding JSON file
+                    json_path = file_path.with_suffix(file_path.suffix + '.json')
+                    parsed_data_available = json_path.exists()
+                    parsing_summary = None
+                    
+                    if parsed_data_available:
+                        try:
+                            with open(json_path, 'r', encoding='utf-8') as f:
+                                parsed_data = json.load(f)
+                                parsing_summary = {
+                                    "sheets_count": len(parsed_data.get("parsed_data", {})),
+                                    "total_records": sum(
+                                        sheet.get("dimensions", {}).get("rows", 0) 
+                                        for sheet in parsed_data.get("parsed_data", {}).values()
+                                        if not sheet.get("empty", True)
+                                    ),
+                                    "data_quality": parsed_data.get("business_summary", {}).get("data_quality", {}).get("assessment", "Unknown"),
+                                    "business_areas": parsed_data.get("business_summary", {}).get("business_context", {}).get("key_business_areas", []),
+                                    "key_insights_count": len(parsed_data.get("business_summary", {}).get("insights", []))
+                                }
+                        except Exception:
+                            parsing_summary = {"error": "Failed to load parsed data"}
+                    
                     file_info = {
                         "filename": original_filename,
                         "path": str(file_path),
+                        "json_path": str(json_path) if parsed_data_available else None,
                         "size": file_path.stat().st_size,
-                        "uploaded_at": datetime.fromtimestamp(file_path.stat().st_mtime).isoformat()
+                        "uploaded_at": datetime.fromtimestamp(file_path.stat().st_mtime).isoformat(),
+                        "parsed_data_available": parsed_data_available,
+                        "parsing_summary": parsing_summary
                     }
                     
                     # Keep only the most recent version of each file
@@ -150,6 +545,61 @@ async def list_uploaded_files():
         return {"files": files}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to list files: {str(e)}")
+
+@app.get("/api/files/{file_id}/parsed-data")
+async def get_parsed_data(file_id: str):
+    """Get parsed JSON data for a specific file"""
+    try:
+        # Find the JSON file for this file_id
+        json_files = list(UPLOADS_DIR.glob(f"{file_id}_*.json"))
+        
+        if not json_files:
+            raise HTTPException(status_code=404, detail="Parsed data not found for this file")
+        
+        json_path = json_files[0]  # Take the first match
+        
+        with open(json_path, 'r', encoding='utf-8') as f:
+            parsed_data = json.load(f)
+        
+        return {
+            "file_id": file_id,
+            "json_path": str(json_path),
+            "parsed_data": parsed_data,
+            "last_updated": datetime.fromtimestamp(json_path.stat().st_mtime).isoformat()
+        }
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to retrieve parsed data: {str(e)}")
+
+@app.post("/api/files/reparse")
+async def reparse_file(file_path: str):
+    """Reparse an existing Excel file with updated parsing logic"""
+    try:
+        file_path_obj = Path(file_path)
+        
+        if not file_path_obj.exists():
+            raise HTTPException(status_code=404, detail="File not found")
+        
+        # Parse the file again
+        parser = ExcelParsingEngine()
+        parsed_data = parser.parse_excel_file(str(file_path_obj))
+        
+        # Save updated parsed data
+        json_path = file_path_obj.with_suffix(file_path_obj.suffix + '.json')
+        
+        with open(json_path, 'w', encoding='utf-8') as json_file:
+            json.dump(parsed_data, json_file, indent=2, ensure_ascii=False)
+        
+        return {
+            "message": "File reparsed successfully",
+            "file_path": str(file_path_obj),
+            "json_path": str(json_path),
+            "parsed_data": parsed_data,
+            "reparsed_at": datetime.now().isoformat()
+        }
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to reparse file: {str(e)}")
 
 # ─────────────────────────────── Configuration Management ────────────────────────────── #
 
@@ -367,6 +817,26 @@ async def run_claude_sdk_analysis(session_id: str, request: AnalysisRequest):
         if request.file_path and request.file_path not in excel_files:
             excel_files.append(request.file_path)
         
+        # Load parsed data for all Excel files
+        combined_parsed_data = {}
+        for file_path in excel_files:
+            json_path = Path(file_path).with_suffix(Path(file_path).suffix + '.json')
+            if json_path.exists():
+                try:
+                    with open(json_path, 'r', encoding='utf-8') as f:
+                        file_parsed_data = json.load(f)
+                        # Merge parsed data from multiple files
+                        if not combined_parsed_data:
+                            combined_parsed_data = file_parsed_data
+                        else:
+                            # Merge multiple files' data
+                            combined_parsed_data['parsed_data'].update(file_parsed_data.get('parsed_data', {}))
+                            combined_parsed_data['business_summary']['insights'].extend(
+                                file_parsed_data.get('business_summary', {}).get('insights', [])
+                            )
+                except Exception as e:
+                    print(f"Warning: Could not load parsed data for {file_path}: {e}")
+        
         # Enhanced business context with conversation history
         business_context = request.business_context or {
             "company": "Kop&Kande",
@@ -386,10 +856,11 @@ async def run_claude_sdk_analysis(session_id: str, request: AnalysisRequest):
         if request.message:
             business_context["user_request"] = request.message
         
-        # Initialize the Claude SDK farm
+        # Initialize the Claude SDK farm with parsed data
         farm = ClaudeSDKAgentFarm(
             session_id=session_id,
             excel_files=excel_files,
+            parsed_data=combined_parsed_data,  # Pass the parsed JSON data
             business_context=business_context,
             language=request.language,
             analysis_type=request.analysis_type,

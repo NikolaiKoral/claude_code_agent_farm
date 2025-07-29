@@ -51,12 +51,14 @@ class ClaudeSDKAgentFarm:
     def __init__(self, 
                  session_id: str,
                  excel_files: List[str] = None,
+                 parsed_data: Dict[str, Any] = None,
                  business_context: Dict[str, Any] = None,
                  language: str = "danish",
                  analysis_type: str = "business_case_development",
                  agents: int = 10):
         self.session_id = session_id
         self.excel_files = excel_files or []
+        self.parsed_data = parsed_data or {}
         self.business_context = business_context or {}
         self.language = language
         self.analysis_type = analysis_type
@@ -143,7 +145,7 @@ class ClaudeSDKAgentFarm:
             await self.progress_callback(active_agents, status)
     
     def _create_agent_prompt(self, config: AgentConfig) -> str:
-        """Create specialized prompt for agent (from original system)"""
+        """Create specialized prompt for agent with parsed JSON data"""
         
         # Base business context
         context_str = f"""
@@ -154,28 +156,77 @@ Business Context:
 - Analysis Type: {self.analysis_type}
 """
         
-        # Excel file context
-        excel_context = ""
-        if self.excel_files:
-            excel_context = f"\nExcel Files Available: {', '.join(self.excel_files)}"
+        # Parsed data context (much more detailed than file paths)
+        data_context = ""
+        if self.parsed_data:
+            # Create comprehensive data summary for the agent
+            file_info = self.parsed_data.get('file_info', {})
+            business_summary = self.parsed_data.get('business_summary', {})
+            parsed_sheets = self.parsed_data.get('parsed_data', {})
+            
+            data_context = f"""
+
+EXCEL DATA ANALYSIS (Parsed & Ready):
+File: {file_info.get('name', 'Unknown')}
+Sheets: {file_info.get('sheet_count', 0)} sheets processed
+Total Records: {business_summary.get('data_quality', {}).get('total_records', 0)}
+Data Quality: {business_summary.get('data_quality', {}).get('assessment', 'Unknown')}
+
+Business Insights Already Identified:
+{chr(10).join(['- ' + insight for insight in business_summary.get('insights', [])])}
+
+Key Business Areas Detected:
+{', '.join(business_summary.get('business_context', {}).get('key_business_areas', []))}
+
+DETAILED SHEET DATA:
+"""
+            
+            # Add specific sheet data for analysis
+            for sheet_name, sheet_data in parsed_sheets.items():
+                if not sheet_data.get('empty', False):
+                    dimensions = sheet_data.get('dimensions', {})
+                    key_metrics = sheet_data.get('key_metrics', {})
+                    
+                    data_context += f"""
+Sheet: {sheet_name}
+- Dimensions: {dimensions.get('rows', 0)} rows × {dimensions.get('columns', 0)} columns
+- Key Metrics Available: {list(key_metrics.keys())}
+- Sample Data Structure: {sheet_data.get('columns', [])[:5]}
+"""
+                    
+                    # Add specific financial data if available
+                    financial_columns = [
+                        col_name for col_name, col_info in sheet_data.get('column_analysis', {}).items() 
+                        if col_info.get('is_financial', False)
+                    ]
+                    if financial_columns:
+                        data_context += f"- Financial Columns: {', '.join(financial_columns[:3])}\n"
         
-        # Agent-specific prompt
+        # Fallback to file list if no parsed data
+        elif self.excel_files:
+            data_context = f"\nExcel Files Available: {', '.join(self.excel_files)}"
+        
+        # Agent-specific prompt with rich data context
         agent_prompt = f"""
 You are a specialized {config.agent_type} business analyst. Your expertise is in {config.description}.
 
-{context_str}{excel_context}
+{context_str}{data_context}
 
-Focus Areas: {config.prompt_focus}
-Relevant Data Sheets: {', '.join(config.excel_sheets)}
+ANALYSIS FOCUS: {config.prompt_focus}
+TARGET SHEETS: {', '.join(config.excel_sheets)}
 
-Instructions:
-1. Analyze the provided business data with focus on {config.prompt_focus}
-2. Generate insights specific to {config.agent_type}
-3. Provide actionable recommendations
-4. Present findings in {self.language}
-5. Maintain professional business analysis standards
+CRITICAL INSTRUCTIONS:
+1. Use the PARSED DATA provided above - no need to read Excel files manually
+2. Focus your analysis on {config.prompt_focus}
+3. Reference specific numbers and metrics from the data
+4. Generate insights specific to {config.agent_type}
+5. Provide actionable recommendations in {self.language}
+6. Cross-reference data points to validate findings
+7. Present analysis in professional business format
 
-Begin your analysis focusing on {config.prompt_focus}:
+JSON DATA ACCESS: The complete parsed data is available as structured JSON. Use the business insights, key metrics, and sheet data provided above for your analysis.
+
+Begin your specialized {config.agent_type} analysis now:
 """
         return agent_prompt.strip()
     
