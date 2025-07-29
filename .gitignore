@@ -60,7 +60,30 @@ dmypy.json
 *.bak
 *.backup
 
+# Environment variables and secrets
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# API keys and configuration
+config/secrets.json
+secrets/
+*.key
+*.pem
+
 # Claude Agent Farm state files
 .claude_agent_farm_state.json
 .claude_agent_farm_state.tmp
+.business_analysis_farm_state.json
 .ruff_cache/
+
+# Logs
+*.log
+backend.log
+ui_adapter.log
+frontend.log
+
+# Uploads directory
+uploads/
