@@ -898,17 +898,27 @@ async def run_claude_sdk_analysis(session_id: str, request: AnalysisRequest):
         # Set up streaming callbacks
         async def handle_streaming_message(message: StreamingMessage):
             """Handle streaming messages from agents"""
+            # Map agent message types to proper progress types for frontend
+            progress_type_map = {
+                "agent_started": "agent_started",
+                "agent_thinking": "agent_thinking", 
+                "agent_completed": "agent_completed",
+                "error": "analysis_error"
+            }
+            
+            progress_type = progress_type_map.get(message.message_type, "agent_thinking")
+            
             await notify_websocket_clients(session_id, {
                 "type": "progress",
                 "session_id": session_id,
-                "progress_type": "agent_thinking",
+                "progress_type": progress_type,
                 "agent": message.agent_type,
                 "message": f"[{message.agent_type}] {message.content}",
                 "content": message.content,
                 "timestamp": message.timestamp.isoformat()
             })
             
-            print(f"[STREAM] {message.agent_type}: {message.content[:100]}...")
+            print(f"[STREAM] {message.agent_type} ({progress_type}): {message.content[:100]}...")
         
         async def handle_progress_update(active_agents: int, status: str):
             """Handle progress updates"""

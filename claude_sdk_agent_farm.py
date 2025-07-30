@@ -238,11 +238,12 @@ Begin your specialized {config.agent_type} analysis now:
         prompt = self._create_agent_prompt(config)
         messages = []
         
+        # Send agent started event
         await self._send_message(StreamingMessage(
             agent_id=config.agent_id,
             agent_type=config.agent_type,
-            message_type="progress",
-            content=f"🟢 Starting {config.agent_type} analysis...",
+            message_type="agent_started",
+            content=f"Starting {config.agent_type}",
             timestamp=datetime.now()
         ))
         
@@ -254,11 +255,11 @@ Begin your specialized {config.agent_type} analysis now:
             ):
                 messages.append(message)
                 
-                # Stream each message chunk
+                # Stream each message chunk as thinking
                 await self._send_message(StreamingMessage(
                     agent_id=config.agent_id,
                     agent_type=config.agent_type,
-                    message_type="thinking",
+                    message_type="agent_thinking",
                     content=str(message.content) if hasattr(message, 'content') else str(message),
                     timestamp=datetime.now()
                 ))
@@ -272,10 +273,11 @@ Begin your specialized {config.agent_type} analysis now:
                 timestamp=datetime.now()
             ))
             
+        # Send agent completed event
         await self._send_message(StreamingMessage(
             agent_id=config.agent_id,
             agent_type=config.agent_type,
-            message_type="result",
+            message_type="agent_completed",
             content=f"✅ {config.agent_type} analysis completed",
             timestamp=datetime.now()
         ))
@@ -290,9 +292,9 @@ Begin your specialized {config.agent_type} analysis now:
         
         await self._send_message(StreamingMessage(
             agent_id=config.agent_id,
-            agent_type=config.agent_type,
-            message_type="progress",
-            content=f"🟢 Starting {config.agent_type} analysis (subprocess)...",  
+            agent_type=config.agent_type,         
+            message_type="agent_started",
+            content=f"Starting {config.agent_type}",  
             timestamp=datetime.now()
         ))
         
@@ -320,7 +322,7 @@ Begin your specialized {config.agent_type} analysis now:
                 await self._send_message(StreamingMessage(
                     agent_id=config.agent_id,
                     agent_type=config.agent_type,
-                    message_type="thinking",
+                    message_type="agent_thinking",
                     content=line_text,
                     timestamp=datetime.now()
                 ))
@@ -341,7 +343,7 @@ Begin your specialized {config.agent_type} analysis now:
         await self._send_message(StreamingMessage(
             agent_id=config.agent_id,
             agent_type=config.agent_type,
-            message_type="result",
+            message_type="agent_completed",
             content=f"✅ {config.agent_type} analysis completed",
             timestamp=datetime.now()
         ))
